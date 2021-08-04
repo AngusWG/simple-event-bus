@@ -4,7 +4,14 @@
 
 a simple python event bus
 
-* TODO
+## Install:
+
+``` bash
+pip install simple_event_bus
+```
+
+## Example:
+
 
 ## Features
 
@@ -15,8 +22,7 @@ a simple python event bus
 * EventBus.run_forever function
 * EventBus.publish_event accept Event , EVENT_TYPE and str.
 * Event can get current_app
-  
-* [ ] listening function args check
+* listening function args check
 
 ---
 

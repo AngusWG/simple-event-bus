@@ -50,13 +50,13 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr *_coverage_report
 
 format: ## format python code
-	black simple_event_bus tests
-	isort simple_event_bus tests --profile black
+	black simple_event_bus tests example
+	isort simple_event_bus tests example --profile black
 
 lint: ## check style with flake8
-	flake8 simple_event_bus tests
-	black simple_event_bus tests --check
-	isort simple_event_bus tests --check-only --profile black
+	flake8 simple_event_bus tests example
+	black simple_event_bus tests example --check
+	isort simple_event_bus tests example --check-only --profile black
 
 test: ## run tests quickly with the default Python
 	pytest

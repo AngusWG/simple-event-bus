@@ -107,3 +107,4 @@ ENV/
 
 *.c
 config.yaml
+simple_event_bus_test_coverage_report

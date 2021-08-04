@@ -2,7 +2,7 @@
 # @Time   : 2021/8/4 12:02
 # @author : zza
 # @Email  : z740713651@outlook.com
-# @File   : ${FILE_NAME}
+# @File   : event.py
 from typing import Any, Dict, TypeVar
 
 from simple_event_bus.errors import EVENTNameError
@@ -26,7 +26,9 @@ EVENT_TYPE = TypeVar("EVENT_TYPE", str, EVENT)
 
 
 class Event(object):
-    def __init__(self, event_type: EVENT, **kwargs: Any):
+    def __init__(self, event_type: EVENT_TYPE, **kwargs: Any):
+        if isinstance(event_type, str):
+            event_type = EVENT(event_type)
         self.__dict__: Dict[EVENT:Any] = kwargs
         self.event_type = event_type
         self.current_app = None

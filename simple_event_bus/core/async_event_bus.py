@@ -2,7 +2,7 @@
 # @Time   : 2021/8/4 12:04
 # @author : zza
 # @Email  : z740713651@outlook.com
-# @File   : ${FILE_NAME}
+# @File   : async_event_bus.py
 import asyncio
 import datetime
 import inspect
@@ -28,16 +28,16 @@ class AsyncEventBus(EventBus):
 
     async def run_forever(
         self,
-        default_event_name: EVENT = EVENT("HeartBeat"),
-        default_time_interval: int = 1,
+        default_event_type: EVENT_TYPE = EVENT("HeartBeat"),
+        default_time_interval: Union[int, float] = 1,
     ) -> None:
         self._loop_enable = True
-        self._default_event_name = default_event_name
+        self._default_event_type = self._event_type_format(default_event_type)
         self._time_interval = default_time_interval
 
         while self._loop_enable:
             await self.publish_event(
-                Event(self._default_event_name, now=datetime.datetime.now())
+                Event(self._default_event_type, now=datetime.datetime.now())
             )
             await asyncio.sleep(self._time_interval)
         return

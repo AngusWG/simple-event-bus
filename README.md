@@ -4,6 +4,28 @@
 
 a simple python event bus
 
+## Install:
+
+``` bash
+pip install simple_event_bus
+```
+
+## Example:
+
+
+## Features
+
+---
+
+* EventBus
+* AsyncEventBus
+* EventBus.run_forever function
+* EventBus.publish_event accept Event , EVENT_TYPE and str.
+* Event can get current_app
+* listening function args check
+
+---
+
 * [Black formatter](https://github.com/psf/black)
 
 > This project use black, please set `Continuation indent` = 4  
@@ -13,16 +35,4 @@ a simple python event bus
 
 > Use flake8 to check your code style.
 
-* TODO
-
-## Features
-
----
-
-* EventBus
-* AsyncEventBus
-* EventBus.run_forever function
-* EventBus.publish_event can push Event , EVENT_TYPE and str.
-* Event can get current_app
-  
-* [ ] listening function args check
+* This project is made by [AngusWG/cookiecutter-py-package](https://github.com/AngusWG/cookiecutter-py-package.git)

@@ -4,6 +4,7 @@
 
 from codecs import open
 from os import path
+
 from setuptools import setup, find_packages
 
 import versioneer
@@ -35,7 +36,7 @@ setup(
     packages=find_packages(include=["simple_event_bus", "simple_event_bus.*"]),
     entry_points={
         "console_scripts": [
-            "simple_event_bus=simple_event_bus.__main__:entry_point",
+            # "simple_event_bus=simple_event_bus.__main__:entry_point",
         ],
     },
     include_package_data=True,
@@ -47,7 +48,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",

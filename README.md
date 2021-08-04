@@ -12,6 +12,27 @@ pip install simple_event_bus
 
 ## Example:
 
+```python
+import asyncio
+
+from simple_event_bus import AsyncEventBus, Event
+
+app = AsyncEventBus()
+tick_list = []
+
+
+@app.listening("HeartBeat")
+async def tick_collector(event: Event) -> None:
+    print(event.now)
+    tick_list.append(event)
+    if len(tick_list) > 5:
+        await app.publish_event("close_loop")
+
+
+asyncio.get_event_loop().run_until_complete(app.run_forever())
+```
+
+click [me](./example) to get more examples.
 
 ## Features
 

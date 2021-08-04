@@ -60,8 +60,8 @@ class EventBus(object):
 
         return wrapper
 
-    def publish_event(self, event: Event) -> None:
-        self._event_format(event)
+    def publish_event(self, event: Union[Event, EVENT_TYPE]) -> None:
+        event = self._event_format(event)
         self.logger.debug(f"Get {event}")
         for listener in self._listeners[event.event_type]:
             if listener(event):

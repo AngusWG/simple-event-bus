@@ -29,7 +29,7 @@ class TestCore:
                 app.publish_event(Event(EVENT("close_loop")))
             return True
 
-        app.run_forever()
+        app.run_forever(default_time_interval=0.1)
         assert len(event_list) > 5
 
         with pytest.raises(MultiParamFunctionError):
@@ -60,7 +60,8 @@ class TestCore:
             if len(async_event_list) == 5:
                 await app.publish_event("close_loop")
 
-        await app.run_forever()
+        await app.run_forever(default_time_interval=0.1)
         assert len(event_list) == 10
         assert len(async_event_list) == 5
         assert "async_count" in app.get_listener_name_list("HeartBeat")
+        assert "close_loop" in app.get_listener_name_list()

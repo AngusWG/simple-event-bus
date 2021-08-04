@@ -18,4 +18,12 @@ class ErrorEventType(EventBusBaseError, TypeError):
 
 
 class EVENTNameError(EventBusBaseError, NameError):
-    ...
+    """
+    EVENT name can not contain spaces
+    """
+
+
+class MultiParamFunctionError(EventBusBaseError):
+    """
+    EventBus only send one param(The event) to function
+    """

@@ -7,6 +7,7 @@ from simple_event_bus.errors import (
     ErrorEventType,
     EventBusBaseError,
     EVENTNameError,
+    MultiParamFunctionError,
     NotAsyncFunction,
 )
 
@@ -30,4 +31,5 @@ __all__ = [
     NotAsyncFunction,
     ErrorEventType,
     EVENTNameError,
+    MultiParamFunctionError,
 ]

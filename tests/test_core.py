@@ -5,6 +5,8 @@
 # @File   : test_core.py
 import pytest
 
+from simple_event_bus import MultiParamFunctionError
+
 
 class TestCore:
     def test_event(self):
@@ -18,7 +20,6 @@ class TestCore:
         from simple_event_bus.core import EVENT, Event, EventBus
 
         app = EventBus()
-        count_once_list = []
         event_list = []
 
         @app.listening("HeartBeat")
@@ -30,6 +31,13 @@ class TestCore:
 
         app.run_forever()
         assert len(event_list) > 5
+
+        with pytest.raises(MultiParamFunctionError):
+
+            @app.listening("HeartBeat")
+            def error_func():
+                print("this is a error function")
+                return
 
     @pytest.mark.asyncio
     async def test_async_event_bus(self):

@@ -4,6 +4,7 @@
 # @Email  : z740713651@outlook.com
 # @File   : ${FILE_NAME}
 import datetime
+import inspect
 import logging
 import time
 from collections import defaultdict
@@ -11,6 +12,7 @@ from functools import lru_cache
 from typing import Callable, Dict, List, Union
 
 from simple_event_bus.core.event import EVENT, EVENT_TYPE, Event
+from simple_event_bus.errors import MultiParamFunctionError
 
 
 class EventBus(object):
@@ -40,7 +42,12 @@ class EventBus(object):
         return event
 
     def add_listener(self, event_type: EVENT_TYPE, listener: Callable) -> None:
+        # args check
         event_type = self._event_type_format(event_type)
+        signature = inspect.signature(listener)
+        if len(signature.parameters) != 1:
+            raise MultiParamFunctionError(MultiParamFunctionError.__doc__)
+        # append
         self._listeners[event_type].append(listener)
 
     def listening(self, event_type: EVENT_TYPE) -> Callable:

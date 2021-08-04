@@ -5,7 +5,7 @@
 # @File   : ${FILE_NAME}
 from typing import Any, Dict, TypeVar
 
-from simple_event_bus import EVENTNameError
+from simple_event_bus.errors import EVENTNameError
 
 
 class EVENT(str):

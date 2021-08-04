@@ -1,0 +1,40 @@
+name: Test
+on: [ push, pull_request ]
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        python-version: ['3.7', '3.8', '3.9' ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup package
+        run: |
+          pip install .[dev_require]
+
+      - name: lint
+        run: |
+          flake8 simple_event_bus tests
+          black simple_event_bus tests --check
+          isort simple_event_bus tests --check-only --profile black
+
+      - name: coverage
+        run: |
+          coverage run --source simple_event_bus -m pytest
+          coverage combine
+
+      - name: package test
+        run: |
+          pip install build
+          python -m build --sdist --outdir dist/ .
+          pip install dist/*
+          pytest tests

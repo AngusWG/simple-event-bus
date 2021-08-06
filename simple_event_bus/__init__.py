@@ -3,13 +3,6 @@
 from __future__ import print_function
 
 from simple_event_bus.core import EVENT, EVENT_TYPE, AsyncEventBus, Event, EventBus
-from simple_event_bus.errors import (
-    ErrorEventType,
-    EventBusBaseError,
-    EVENTNameError,
-    MultiParamFunctionError,
-    NotAsyncFunction,
-)
 
 from ._version import get_versions
 
@@ -26,10 +19,4 @@ __all__ = [
     Event,
     EventBus,
     AsyncEventBus,
-    # exception
-    EventBusBaseError,
-    NotAsyncFunction,
-    ErrorEventType,
-    EVENTNameError,
-    MultiParamFunctionError,
 ]

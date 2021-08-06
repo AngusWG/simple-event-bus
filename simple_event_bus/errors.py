@@ -27,3 +27,9 @@ class MultiParamFunctionError(EventBusBaseError):
     """
     EventBus only send one param(The event) to function
     """
+
+
+class DuplicateFunctionError(EventBusBaseError):
+    """
+    Duplicate Function in same EVENT
+    """

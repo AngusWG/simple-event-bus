@@ -44,6 +44,8 @@ click [me](./example) to get more examples.
 * EventBus.publish_event accept Event , EVENT_TYPE and str.
 * Event can get current_app
 * listening function args check
+* add remove method
+* allow no param method to listening
 
 ---
 

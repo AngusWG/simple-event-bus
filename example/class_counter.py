@@ -5,19 +5,9 @@
 # @File   : class_counter.py
 import asyncio
 
-from simple_event_bus import AsyncEventBus, Event
+from simple_event_bus import AsyncEventBus, Event, run_simple_event_source_async
 
 app = AsyncEventBus()
-
-
-def async_partial(f, *args):
-    async def f2(*args2):
-        result = f(*args, *args2)
-        if asyncio.iscoroutinefunction(f):
-            result = await result
-        return result
-
-    return f2
 
 
 class Counter:
@@ -32,14 +22,16 @@ class Counter:
         self.tick_list.append(event)
 
         if len(self.tick_list) > 5:
-            await app.publish_event(Event("clock", message=f"ringing {len(self.tick_list)}"))
+            await app.publish_event(
+                Event("clock", message=f"ringing {len(self.tick_list)}")
+            )
 
         if len(self.tick_list) > 10:
             await app.publish_event("teardown")
 
     @classmethod
-    def teardown(cls, event: Event) -> None:
-        event.current_app.close_loop()
+    async def teardown(cls, event: Event) -> None:
+        await event.current_app.publish_event("close_loop")
         cls.tick_list.clear()
 
     @staticmethod
@@ -50,7 +42,7 @@ class Counter:
 
 async def service() -> None:
     Counter()
-    await app.run_forever(default_event_type="tick", default_time_interval=0.1)
+    await run_simple_event_source_async(app, loop_event="tick", time_interval=0.1)
     print(list(app.get_listener_name_list()))
 
 

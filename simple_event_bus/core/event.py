@@ -3,9 +3,13 @@
 # @author : zza
 # @Email  : z740713651@outlook.com
 # @File   : event.py
-from typing import Any, Dict, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, Optional, TypeVar, Union
 
 from simple_event_bus.errors import EVENTNameError
+
+if TYPE_CHECKING:  # pragma: no cover
+    # https://stackoverflow.com/questions/39740632/python-type-hinting-without-cyclic-imports
+    from simple_event_bus.core import AsyncEventBus, EventBus
 
 
 class EVENT(str):
@@ -31,7 +35,7 @@ class Event(object):
             event_type = EVENT(event_type)
         self.__dict__: Dict[EVENT:Any] = kwargs
         self.event_type = event_type
-        self.current_app = None
+        self.current_app: Optional[Union["EventBus", "AsyncEventBus"]] = None
 
     def __repr__(self) -> str:
         _attr = ", ".join(

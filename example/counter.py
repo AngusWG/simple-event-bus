@@ -5,7 +5,7 @@
 # @File   : counter.py
 import asyncio
 
-from simple_event_bus import AsyncEventBus, Event
+from simple_event_bus import AsyncEventBus, Event, run_simple_event_source_async
 
 app = AsyncEventBus()
 tick_list = []
@@ -29,12 +29,12 @@ async def clock(event: Event) -> None:
 
 
 @app.listening("teardown")
-def teardown(event: Event) -> None:
-    event.current_app.close_loop()
+async def teardown(event: Event) -> None:
+    await event.current_app.publish_event("close_loop")
 
 
 async def service() -> None:
-    await app.run_forever(default_event_type="tick", default_time_interval=0.1)
+    await run_simple_event_source_async(app, loop_event="tick", time_interval=0.1)
     print(list(app.get_listener_name_list()))
 
 

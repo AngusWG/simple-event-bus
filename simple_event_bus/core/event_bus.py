@@ -3,11 +3,9 @@
 # @author : zza
 # @Email  : z740713651@outlook.com
 # @File   : event_bus.py
-import datetime
 import functools
 import inspect
 import logging
-import time
 from collections import defaultdict
 from functools import lru_cache
 from typing import Callable, Dict, List, Union
@@ -18,23 +16,18 @@ from simple_event_bus.errors import DuplicateFunctionError, MultiParamFunctionEr
 
 class EventBus(object):
     def __init__(self):
-        self._default_event_type: EVENT = EVENT("HeartBeat")
-        self._time_interval: int = 0
-        self._loop_enable: bool = False
         self._listeners: Dict[str, List[Callable]] = defaultdict(list)
-
-        self.add_listener(EVENT("close_loop"), self.close_loop)
         self.logger = logging.getLogger("simple_event_bus")
 
     @staticmethod
     @lru_cache()
-    def _event_type_format(event_type: EVENT_TYPE) -> EVENT:
+    def event_type_format(event_type: EVENT_TYPE) -> EVENT:
         """Make str to EVENT"""
         if isinstance(event_type, str):
             return EVENT(event_type)
 
     @lru_cache()
-    def _event_format(self, event: Union[Event, EVENT_TYPE]) -> Event:
+    def event_format(self, event: Union[Event, EVENT_TYPE]) -> Event:
         """Make str or EVENT to be instance of Event"""
         if isinstance(event, str):
             event: EVENT = EVENT(event)
@@ -61,7 +54,7 @@ class EventBus(object):
             >>> EventBus().add_listener("heartbeat", lambda event:print(event))
         """
         # args check
-        event_type = self._event_type_format(event_type)
+        event_type = self.event_type_format(event_type)
         signature = inspect.signature(listener)
         if len(signature.parameters) > 1:
             raise MultiParamFunctionError(MultiParamFunctionError.__doc__)
@@ -85,7 +78,7 @@ class EventBus(object):
 
         """
         # args check
-        event_type = self._event_type_format(event_type)
+        event_type = self.event_type_format(event_type)
         self._listeners[event_type].remove(listener)
         while iter_delete and listener in self._listeners[event_type]:
             self._listeners[event_type].remove(listener)
@@ -103,7 +96,7 @@ class EventBus(object):
             ... def heartbeat(event: Event=None):
             ...     return event.now
         """
-        event_type = self._event_type_format(event_type)
+        event_type = self.event_type_format(event_type)
 
         def wrapper(listener: Callable) -> Callable:
             self.add_listener(event_type, listener)
@@ -134,13 +127,15 @@ class EventBus(object):
     def publish_event(self, event: Union[Event, EVENT_TYPE]) -> None:
         """Trigger the event list function
 
+        if function return True, Other functions in the queue will not be triggered.
+
         Args:
             event: str, EVENT or instance of Event
 
         Returns:
             None
         """
-        event = self._event_format(event)
+        event = self.event_format(event)
         self.logger.debug(f"Get {event}")
         for listener in self._listeners[event.event_type]:
             res = self._run_listener(event, listener)
@@ -155,26 +150,6 @@ class EventBus(object):
                 for listener in listener_list:
                     yield listener.__name__
 
-        event_type = self._event_type_format(event_type)
+        event_type = self.event_type_format(event_type)
         for listener in self._listeners[event_type]:
             yield listener.__name__
-
-    def run_forever(
-        self,
-        default_event_type: EVENT_TYPE = EVENT("HeartBeat"),
-        default_time_interval: Union[int, float] = 1,
-    ) -> None:
-        self._loop_enable = True
-        self._default_event_type = self._event_type_format(default_event_type)
-        self._time_interval = default_time_interval
-
-        while self._loop_enable:
-            self.publish_event(
-                Event(self._default_event_type, now=datetime.datetime.now())
-            )
-            time.sleep(self._time_interval)
-        return
-
-    def close_loop(self, _: Event = None) -> None:
-        """close loop"""
-        self._loop_enable = False

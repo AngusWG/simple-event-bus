@@ -15,7 +15,7 @@ pip install simple_event_bus
 ```python
 import asyncio
 
-from simple_event_bus import AsyncEventBus, Event
+from simple_event_bus import AsyncEventBus, Event, run_simple_event_source_async
 
 app = AsyncEventBus()
 tick_list = []
@@ -29,7 +29,7 @@ async def tick_collector(event: Event) -> None:
         await app.publish_event("close_loop")
 
 
-asyncio.get_event_loop().run_until_complete(app.run_forever())
+asyncio.get_event_loop().run_until_complete(run_simple_event_source_async(app))
 ```
 
 click [me](./example) to get more examples.
@@ -46,6 +46,9 @@ click [me](./example) to get more examples.
 * listening function args check
 * add remove method
 * allow no param method to listening
+  
+* [x] Independent event sources
+* [ ] add before event listener and after event listener
 
 ---
 

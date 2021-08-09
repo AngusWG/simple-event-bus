@@ -2,6 +2,7 @@
 
 ## 0.0.3
 
+* independent event sources
 * add remove method
 * allow no param method to listening
 

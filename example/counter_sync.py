@@ -3,6 +3,8 @@
 # @author : zza
 # @Email  : z740713651@outlook.com
 # @File   : counter_sync.py
+import datetime
+import time
 
 from simple_event_bus import Event, EventBus
 
@@ -18,4 +20,11 @@ def tick_collector(event: Event) -> None:
         app.publish_event("close_loop")
 
 
-app.run_forever(default_time_interval=0.1)
+def event_source_maker() -> None:
+    for i in range(10):
+        app.publish_event(Event("HeartBeat", now=datetime.datetime.now()))
+        time.sleep(0.1)
+
+
+if __name__ == "__main__":
+    event_source_maker()

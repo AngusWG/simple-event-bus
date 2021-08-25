@@ -4,8 +4,7 @@
 
 from codecs import open
 from os import path
-
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 import versioneer
 
@@ -30,6 +29,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     description="a simple python event bus",
     long_description=readme + "\n\n" + history,
+    long_description_content_type='text/markdown',
     author="AngusWG",
     author_email="z740713651@outlook.com",
     url="https://github.com/AngusWG/simple-event-bus",

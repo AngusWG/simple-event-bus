@@ -12,7 +12,7 @@ pip install simple_event_bus
 
 ## Example:
 
-```python
+```bash
 import asyncio
 
 from simple_event_bus import AsyncEventBus, Event, run_simple_event_source_async
@@ -32,11 +32,7 @@ async def tick_collector(event: Event) -> None:
 asyncio.get_event_loop().run_until_complete(run_simple_event_source_async(app))
 ```
 
-click [me](./example) to get more examples.
-
 ## Features
-
----
 
 * EventBus
 * AsyncEventBus
@@ -46,7 +42,6 @@ click [me](./example) to get more examples.
 * listening function args check
 * add remove method
 * allow no param method to listening
-  
 * [x] Independent event sources
 * [ ] add before event listener and after event listener
 
